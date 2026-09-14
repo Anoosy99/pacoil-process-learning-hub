@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#071713" />
+  <meta name="description" content="An interactive learning dashboard for understanding oil bleaching, filtration, equipment, readings, alarms, and process trends." />
+  <title>PACOIL Process Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#overview" aria-label="PACOIL Learning Hub home">
+      <span class="brand-mark"><span></span></span>
+      <span><b>PACOIL</b><small>LEARNING HUB</small></span>
+    </a>
+
+    <nav aria-label="Main navigation">
+      <p class="nav-label">LEARN</p>
+      <a class="nav-link active" href="#overview" data-section="overview"><span>01</span> Overview</a>
+      <a class="nav-link" href="#process" data-section="process"><span>02</span> Process flow</a>
+      <a class="nav-link" href="#equipment" data-section="equipment"><span>03</span> Equipment</a>
+      <a class="nav-link" href="#readings" data-section="readings"><span>04</span> Readings</a>
+      <a class="nav-link" href="#filter-cycle" data-section="filter-cycle"><span>05</span> Filter cycle</a>
+      <a class="nav-link" href="#alarms" data-section="alarms"><span>06</span> Alarm lab</a>
+      <a class="nav-link" href="#trends" data-section="trends"><span>07</span> Trends</a>
+      <a class="nav-link" href="#notes" data-section="notes"><span>08</span> Daily notes</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <span class="pulse-dot"></span>
+      <div><b>Training mode</b><small>Simulated data only</small></div>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <button class="menu-button" id="menuButton" aria-label="Open navigation">☰</button>
+      <div class="breadcrumb"><span>INTERN TRAINING</span><i>/</i><b id="pageName">Overview</b></div>
+      <div class="topbar-right">
+        <span class="system-pill"><i></i> SYSTEM NORMAL</span>
+        <div class="clock" id="clock">--:--:--</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <section id="overview" class="page-section active">
+        <div class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow">PROCESS FUNDAMENTALS · MODULE 01</span>
+            <h1>See the plant.<br><em>Understand the data.</em></h1>
+            <p>Learn the bleaching and filtration process through a simplified, interactive view inspired by the control-room system.</p>
+            <div class="hero-actions">
+              <a class="button primary" href="#process">Start learning <span>→</span></a>
+              <a class="button ghost" href="#notes">Open today's notes</a>
+            </div>
+          </div>
+          <div class="hero-visual panel">
+            <div class="visual-head"><span>LIVE PROCESS OVERVIEW</span><small><i></i> SIMULATION</small></div>
+            <div class="mini-process">
+              <button class="mini-unit" data-jump="process" aria-label="Incoming oil"><span class="unit-icon">IN</span><b>Incoming oil</b><small>Feed</small></button>
+              <span class="flow-line"><i></i></span>
+              <button class="mini-unit active" data-jump="process" aria-label="Bleaching"><span class="unit-icon">B1</span><b>Bleaching</b><small>112.4 °C</small></button>
+              <span class="flow-line"><i></i></span>
+              <button class="mini-unit" data-jump="filter-cycle" aria-label="Filtration"><span class="unit-icon">F1</span><b>Filtration</b><small>3.18 bar</small></button>
+              <span class="flow-line"><i></i></span>
+              <button class="mini-unit" data-jump="process" aria-label="Next process"><span class="unit-icon">OUT</span><b>Next process</b><small>Ready</small></button>
+            </div>
+            <div class="visual-metrics">
+              <div><span>Temperature</span><b>112.4 <small>°C</small></b><em>Normal</em></div>
+              <div><span>Pressure</span><b>3.18 <small>bar</small></b><em>Normal</em></div>
+              <div><span>Flow rate</span><b>18.6 <small>t/h</small></b><em>Stable</em></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-heading">
+          <div><span class="eyebrow">YOUR FIRST GOAL</span><h2>What you need to understand</h2></div>
+          <span class="progress-text"><b id="completedCount">0</b>/8 topics explored</span>
+        </div>
+        <div class="topic-grid" id="topicGrid">
+          <button class="topic-card" data-jump="process" data-topic="purpose"><span>01</span><div class="topic-icon">◎</div><h3>Process purpose</h3><p>Why bleaching and filtration are used.</p><i>Explore →</i></button>
+          <button class="topic-card" data-jump="process" data-topic="flow"><span>02</span><div class="topic-icon">⇢</div><h3>The flow</h3><p>Where the oil comes from and goes next.</p><i>Explore →</i></button>
+          <button class="topic-card" data-jump="equipment" data-topic="equipment"><span>03</span><div class="topic-icon">◫</div><h3>Main equipment</h3><p>Tanks, pumps, valves and filters.</p><i>Explore →</i></button>
+          <button class="topic-card" data-jump="readings" data-topic="readings"><span>04</span><div class="topic-icon">⌁</div><h3>Main readings</h3><p>Temperature, pressure, flow and level.</p><i>Explore →</i></button>
+          <button class="topic-card" data-jump="readings" data-topic="pvsv"><span>05</span><div class="topic-icon">≠</div><h3>PV vs SV</h3><p>Actual measurement versus target value.</p><i>Explore →</i></button>
+          <button class="topic-card" data-jump="equipment" data-topic="status"><span>06</span><div class="topic-icon">◉</div><h3>Status indicators</h3><p>Running, stopped, auto and manual.</p><i>Explore →</i></button>
+          <button class="topic-card" data-jump="alarms" data-topic="alarms"><span>07</span><div class="topic-icon">!</div><h3>Alarms</h3><p>Recognise abnormal conditions safely.</p><i>Explore →</i></button>
+          <button class="topic-card" data-jump="trends" data-topic="trends"><span>08</span><div class="topic-icon">↗</div><h3>Trends & data</h3><p>Read patterns in historical measurements.</p><i>Explore →</i></button>
+        </div>
+      </section>
+
+      <section id="process" class="page-section">
+        <div class="page-intro"><span class="eyebrow">MODULE 02</span><h1>Interactive process flow</h1><p>Click each stage to learn its purpose. Start with the simple flow, then connect it to the tags you see on the real HMI.</p></div>
+        <div class="process-layout">
+          <div class="process-map panel">
+            <div class="panel-title"><div><span>BLEACHING → FILTRATION</span><small>SIMPLIFIED FLOW DIAGRAM</small></div><span class="live-label"><i></i> FLOWING</span></div>
+            <div class="flow-canvas">
+              <button class="process-node selected" data-node="feed"><span class="node-number">01</span><span class="vessel feed-vessel">↓</span><b>Incoming oil</b><small>Feed enters system</small></button>
+              <div class="pipe"><span></span></div>
+              <button class="process-node" data-node="bleach"><span class="node-number">02</span><span class="vessel tank-vessel"><i></i></span><b>Bleaching vessel</b><small>Heat + mix</small></button>
+              <div class="pipe"><span></span></div>
+              <button class="process-node" data-node="filter"><span class="node-number">03</span><span class="vessel filter-vessel">≋</span><b>Pressure filter</b><small>Separate solids</small></button>
+              <div class="pipe"><span></span></div>
+              <button class="process-node" data-node="out"><span class="node-number">04</span><span class="vessel output-vessel">✓</span><b>Filtered oil</b><small>Next process</small></button>
+            </div>
+          </div>
+          <aside class="explain-card panel" id="processExplain">
+            <span class="explain-step">STEP 01</span>
+            <h2>Incoming oil</h2>
+            <p>The oil enters the bleaching section from the previous stage of the refinery.</p>
+            <div class="watch-list"><span>WHAT TO NOTICE</span><ul><li>Incoming flow rate</li><li>Feed temperature</li><li>Source tank and pump status</li></ul></div>
+            <div class="key-point"><b>Key idea</b><p>The pump provides the force that moves oil through the pipe.</p></div>
+          </aside>
+        </div>
+        <div class="simple-summary panel"><b>The whole process in one sentence</b><p>Oil is heated and mixed with bleaching earth, then filtered to remove the earth together with captured colour pigments and impurities.</p></div>
+      </section>
+
+      <section id="equipment" class="page-section">
+        <div class="page-intro"><span class="eyebrow">MODULE 03</span><h1>Know the equipment</h1><p>Recognise what each item does. You do not need to memorise every equipment code or valve number.</p></div>
+        <div class="equipment-grid">
+          <article class="equipment-card panel"><span class="equipment-art pump-art">◉</span><div><span>ROTATING EQUIPMENT</span><h2>Pump</h2><p>Moves oil or another liquid from one section to another by creating flow.</p><dl><dt>Look for</dt><dd>Running / stopped, flow and pressure</dd><dt>Typical state</dt><dd><i class="green-dot"></i> Green often means running</dd></dl></div></article>
+          <article class="equipment-card panel"><span class="equipment-art valve-art">⋈</span><div><span>FLOW CONTROL</span><h2>Valve</h2><p>Opens, closes or adjusts the route and amount of flow through a pipe.</p><dl><dt>Look for</dt><dd>Open / closed and auto / manual</dd><dt>Important</dt><dd>Never operate without permission</dd></dl></div></article>
+          <article class="equipment-card panel"><span class="equipment-art tank-art">▱</span><div><span>PROCESS VESSEL</span><h2>Tank / vessel</h2><p>Holds oil or provides space for heating, mixing and treatment.</p><dl><dt>Look for</dt><dd>Level, temperature and pressure</dd><dt>Common risk</dt><dd>High or low level condition</dd></dl></div></article>
+          <article class="equipment-card panel"><span class="equipment-art filter-art">≋</span><div><span>SEPARATION</span><h2>Filter</h2><p>Separates bleaching earth and captured impurities from the treated oil.</p><dl><dt>Look for</dt><dd>Cycle stage, time and pressure</dd><dt>Result</dt><dd>Clearer filtered oil</dd></dl></div></article>
+        </div>
+        <div class="status-panel panel">
+          <div><span class="eyebrow">STATUS INDICATORS</span><h2>Read the state, not just the colour</h2><p>Colours vary between systems. Always verify the label and the plant's operating standard.</p></div>
+          <div class="status-examples">
+            <span><i class="state-light run"></i><b>RUNNING</b><small>Equipment active</small></span>
+            <span><i class="state-light stop"></i><b>STOPPED</b><small>Equipment inactive</small></span>
+            <span><i class="state-light auto"></i><b>AUTO</b><small>Logic controls it</small></span>
+            <span><i class="state-light alarm"></i><b>ALARM</b><small>Needs attention</small></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="readings" class="page-section">
+        <div class="page-intro"><span class="eyebrow">MODULE 04</span><h1>Read the process</h1><p>Measurements tell you what is happening now. Compare actual values with their targets to understand control.</p></div>
+        <div class="reading-cards">
+          <article class="reading panel"><span>TT</span><div><small>TEMPERATURE</small><b>112.4 <i>°C</i></b><p>How hot the process is.</p></div></article>
+          <article class="reading panel"><span>PT</span><div><small>PRESSURE</small><b>3.18 <i>bar</i></b><p>Force inside equipment or piping.</p></div></article>
+          <article class="reading panel"><span>FT</span><div><small>FLOW RATE</small><b>18.6 <i>t/h</i></b><p>How much material moves over time.</p></div></article>
+          <article class="reading panel"><span>LT</span><div><small>LEVEL</small><b>68.2 <i>%</i></b><p>How full a tank or vessel is.</p></div></article>
+        </div>
+        <div class="simulator panel">
+          <div class="sim-copy"><span class="eyebrow">TRY IT YOURSELF</span><h2>PV vs SV simulator</h2><p><b>SV / SP</b> is the value the system wants. <b>PV</b> is the real value measured by the sensor right now.</p>
+            <div class="formula"><span>ERROR</span><b>SV − PV = <i id="errorValue">2</i>°C</b></div>
+          </div>
+          <div class="sim-controls">
+            <label><span>Set value (SV) <b id="svLabel">110°C</b></span><input id="svRange" type="range" min="70" max="160" value="110"></label>
+            <label><span>Process value (PV) <b id="pvLabel">108°C</b></span><input id="pvRange" type="range" min="70" max="160" value="108"></label>
+            <div class="gauge-wrap">
+              <div class="gauge" id="gauge"><span><b id="gaugeValue">108</b><small>°C · PV</small></span></div>
+              <div class="sim-result normal" id="simResult"><span>● NORMAL</span><p>PV is close to the target.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="filter-cycle" class="page-section">
+        <div class="page-intro"><span class="eyebrow">MODULE 05</span><h1>Filter cycle trainer</h1><p>Follow one complete cycle. Select a stage to understand what it does and which readings matter.</p></div>
+        <div class="cycle-steps panel" id="cycleSteps"></div>
+        <div class="cycle-detail panel" id="cycleDetail"></div>
+      </section>
+
+      <section id="alarms" class="page-section">
+        <div class="page-intro"><span class="eyebrow">MODULE 06</span><h1>Alarm lab</h1><p>Practise interpreting abnormal readings. In the real plant, acknowledge or act only under operator supervision.</p></div>
+        <div class="quiz-layout">
+          <div class="alarm-visual panel">
+            <div class="alarm-head"><span>ACTIVE ALARM</span><b>PT-601 · LOW PRESSURE</b></div>
+            <div class="alarm-reading"><small>PRESSURE PV</small><b>0.8 <i>bar</i></b><span>Normal target: 3.0 bar</span></div>
+            <div class="alarm-wave"><svg viewBox="0 0 500 110" preserveAspectRatio="none"><path d="M0 24 C70 20,90 25,145 23 S210 19,250 25 S310 22,340 26 L360 70 L390 78 L420 82 L500 84"/><line x1="0" y1="25" x2="500" y2="25"/></svg></div>
+          </div>
+          <div class="quiz-card panel">
+            <span class="eyebrow">SCENARIO 01</span><h2>What does this alarm tell you?</h2>
+            <div class="answers" id="answers">
+              <button data-correct="false"><span>A</span>Pressure is higher than expected</button>
+              <button data-correct="true"><span>B</span>Pressure is lower than expected</button>
+              <button data-correct="false"><span>C</span>Temperature is too high</button>
+              <button data-correct="false"><span>D</span>The tank is full</button>
+            </div>
+            <div class="quiz-feedback" id="quizFeedback">Choose the best answer.</div>
+          </div>
+        </div>
+        <div class="safety-note"><b>Training rule</b><p>An alarm is information requiring attention—not permission to operate equipment. Observe, report, and follow the authorised procedure.</p></div>
+      </section>
+
+      <section id="trends" class="page-section">
+        <div class="page-intro"><span class="eyebrow">MODULE 07</span><h1>Trends & data</h1><p>Historical measurements reveal patterns, instability and relationships that a single live value cannot show.</p></div>
+        <div class="trend-panel panel">
+          <div class="trend-head"><div><span>TEMPERATURE TREND</span><small>BLEACHING VESSEL · LAST 8 HOURS</small></div><div class="legend"><i></i> PV <i></i> SV</div></div>
+          <div class="chart-wrap">
+            <div class="y-labels"><span>140</span><span>120</span><span>100</span><span>80</span></div>
+            <svg class="trend-chart" viewBox="0 0 800 300" preserveAspectRatio="none" aria-label="Temperature trend chart">
+              <defs><linearGradient id="area" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#33e6a6" stop-opacity=".28"/><stop offset="100%" stop-color="#33e6a6" stop-opacity="0"/></linearGradient></defs>
+              <g class="grid-lines"><line x1="0" y1="25" x2="800" y2="25"/><line x1="0" y1="105" x2="800" y2="105"/><line x1="0" y1="185" x2="800" y2="185"/><line x1="0" y1="265" x2="800" y2="265"/></g>
+              <line class="set-line" x1="0" y1="102" x2="800" y2="102"/>
+              <path class="area-path" d="M0 220 C70 215,90 175,145 150 S220 108,290 112 S390 98,470 105 S560 95,630 108 S710 101,800 105 L800 300 L0 300Z"/>
+              <path class="data-line" d="M0 220 C70 215,90 175,145 150 S220 108,290 112 S390 98,470 105 S560 95,630 108 S710 101,800 105"/>
+              <circle cx="470" cy="105" r="6"/><g class="tooltip"><rect x="430" y="45" width="80" height="42" rx="6"/><text x="470" y="63">12:00</text><text x="470" y="79">111.2 °C</text></g>
+            </svg>
+            <div class="x-labels"><span>08:00</span><span>10:00</span><span>12:00</span><span>14:00</span><span>16:00</span></div>
+          </div>
+          <div class="trend-insight"><span>INSIGHT</span><p>The temperature rose toward the 110°C set value, then remained relatively stable. This suggests the controller reached its target.</p></div>
+        </div>
+        <div class="data-questions panel"><h2>Questions to ask your supervisor</h2><div><span>01</span><p>Where is historical SCADA data stored?</p><span>02</span><p>Can it be exported to CSV, Excel or a database?</p><span>03</span><p>How long are readings and alarms retained?</p><span>04</span><p>Which variables are most useful for analysis?</p></div></div>
+      </section>
+
+      <section id="notes" class="page-section">
+        <div class="page-intro"><span class="eyebrow">MODULE 08</span><h1>Daily learning log</h1><p>Turn each day on site into structured knowledge. Your entries are stored only in this browser.</p></div>
+        <div class="notes-layout">
+          <div class="checklist panel">
+            <div class="panel-title"><div><span>TODAY'S CHECKLIST</span><small id="todayDate">—</small></div><b id="checkProgress">0%</b></div>
+            <div id="dailyChecks"></div>
+            <button class="reset-link" id="resetChecks">Reset checklist</button>
+          </div>
+          <div class="notes-card panel">
+            <label for="learned">What I learned today</label>
+            <textarea id="learned" placeholder="Example: I learned how the filter pressure changes during filtration..."></textarea>
+            <label for="questions">Questions to ask</label>
+            <textarea id="questions" placeholder="Example: Can trend data be exported to CSV?"></textarea>
+            <div class="note-actions"><span id="saveStatus">Saved locally</span><button class="button primary" id="saveNotes">Save notes</button></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer><span>PACOIL Process Learning Hub</span><p>Educational simulation · Not connected to plant controls</p></footer>
+  </main>
+
+  <div class="toast" id="toast">Progress saved</div>
+  <script src="app.js"></script>
+</body>
+</html>
