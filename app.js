@@ -7,6 +7,7 @@ const toast = document.getElementById("toast");
 const pageTitles = {
   overview: "Overview",
   process: "Process flow",
+  systems: "System screens",
   equipment: "Equipment",
   readings: "Readings",
   "filter-cycle": "Filter cycle",
@@ -118,6 +119,64 @@ document.querySelectorAll(".process-node").forEach(node => {
   });
 });
 
+
+const systemData = {
+  bleaching: {
+    code: "B602", label: "BLEACHING SECTION", title: "Bleaching",
+    body: "Crude oil is heated and mixed with a measured dose of bleaching earth. The earth captures colour pigments and other unwanted material before filtration.",
+    points: ["Crude-oil flow and temperature", "Bleaching-earth dosing rate", "B602 level, temperature and vacuum", "Pump and control-valve status"],
+    note: "Understand the purpose and important variables. You do not need to operate the dosing controls."
+  },
+  filters: {
+    code: "F601–04", label: "PRESSURE FILTERS", title: "Four-filter system",
+    body: "F601, F602, F603 and F604 perform the same separation process. Different filters may be filtering, preparing, drying or cleaning at the same time.",
+    points: ["Current stage of every filter", "Filter pressure and cycle time", "Active feed and circulation route", "Batch counter and abnormal delays"],
+    note: "For analytics, compare cycle duration and pressure patterns between all four filters."
+  },
+  ve702: {
+    code: "VE702", label: "VACUUM ECONOMIZER", title: "Vacuum economizer",
+    body: "This section combines heating and vacuum conditions to remove volatile material or moisture while recovering heat efficiently.",
+    points: ["Vacuum pressure in mbar or Torr", "Inlet and outlet temperatures", "Steam flow and pressure", "Oil flow through the section"],
+    note: "Treat this as a heat-and-vacuum process. Confirm the exact operational purpose with the process engineer."
+  },
+  e702: {
+    code: "E702", label: "SPIRAL HEAT EXCHANGER", title: "Spiral heat exchanger",
+    body: "E702 transfers heat between process streams so oil can be heated or cooled with less wasted energy.",
+    points: ["Temperature before and after E702", "Flow through each side", "Steam or cooling-water condition", "Unexpected temperature difference"],
+    note: "A useful analysis is heat-exchanger performance: compare inlet/outlet temperatures with flow."
+  },
+  utilities: {
+    code: "UTIL", label: "SUPPORTING SERVICES", title: "Utilities",
+    body: "The main process depends on steam, cooling water, compressed air and electrical power. Utility problems can affect several process areas at once.",
+    points: ["3-bar, 9-bar and 12-bar steam", "Clean and dirty cooling water", "Plant air and instrument air", "Voltage, current and power usage"],
+    note: "Utility trends can help explain process alarms even when the process equipment itself is healthy."
+  },
+  vacuum: {
+    code: "VAC", label: "VACUUM SYSTEM", title: "Vacuum system",
+    body: "The vacuum equipment maintains pressure below atmospheric level for parts of the process that require gas or moisture removal.",
+    points: ["Vacuum measurement and stability", "Steam and water availability", "Vacuum-pump status", "Leaks or loss-of-vacuum alarms"],
+    note: "Learn the relationship: lower absolute pressure means a stronger vacuum. Confirm which unit the operators normally use."
+  }
+};
+
+function renderSystem(key) {
+  const data = systemData[key];
+  document.getElementById("systemDetail").innerHTML =
+    '<div class="system-symbol"><div><b>' + data.code + '</b><small>' + data.label + '</small></div></div>' +
+    '<div class="system-copy"><span class="eyebrow">SYSTEM PURPOSE</span><h2>' + data.title + '</h2><p>' + data.body + '</p></div>' +
+    '<div class="system-points"><span>WHAT TO WATCH</span><ul>' + data.points.map(point => "<li>" + point + "</li>").join("") + '</ul></div>' +
+    '<div class="system-note"><b>Intern focus:</b> ' + data.note + '</div>';
+  document.querySelectorAll("[data-system]").forEach(button => button.classList.toggle("active", button.dataset.system === key));
+}
+
+document.querySelectorAll("[data-system]").forEach(button => {
+  button.addEventListener("click", () => {
+    renderSystem(button.dataset.system);
+    markTopic("equipment");
+  });
+});
+renderSystem("bleaching");
+
 const svRange = document.getElementById("svRange");
 const pvRange = document.getElementById("pvRange");
 function updateSimulator() {
@@ -148,13 +207,17 @@ svRange.addEventListener("input", updateSimulator);
 pvRange.addEventListener("input", updateSimulator);
 
 const cycles = [
-  { name: "Vacuum", icon: "◌", text: "Air and gases are removed to prepare the filter for the next step.", watch: [["Primary value", "Vacuum"], ["Equipment", "Vacuum system"], ["Goal", "Prepare filter"]] },
+  { name: "Ready", icon: "✓", text: "The filter is available and waiting for the sequence to begin.", watch: [["Primary value", "Ready / enable"], ["Equipment", "All interlocks"], ["Goal", "Safe to start"]] },
+  { name: "Vacuum", icon: "◌", text: "Air and gases are removed to prepare the filter for filling.", watch: [["Primary value", "Vacuum"], ["Equipment", "Vacuum system"], ["Goal", "Prepare filter"]] },
   { name: "Filling", icon: "↧", text: "The filter is filled with the oil and bleaching-earth mixture.", watch: [["Primary value", "Level / time"], ["Equipment", "Feed valve"], ["Goal", "Fill safely"]] },
-  { name: "Filtration", icon: "≋", text: "Oil passes through the filter medium while solids are retained as filter cake.", watch: [["Primary value", "Pressure"], ["Equipment", "Filter + pump"], ["Goal", "Separate solids"]] },
-  { name: "Circulation", icon: "⟳", text: "Flow may circulate until the oil reaches the required clarity or stable condition.", watch: [["Primary value", "Flow / clarity"], ["Equipment", "Circulation line"], ["Goal", "Stabilise quality"]] },
-  { name: "Emptying", icon: "↘", text: "Remaining liquid is displaced or drained from the filter before drying.", watch: [["Primary value", "Level / flow"], ["Equipment", "Outlet valve"], ["Goal", "Remove oil"]] },
-  { name: "Drying", icon: "≈", text: "The filter cake is dried to recover remaining oil and prepare it for discharge.", watch: [["Primary value", "Time / pressure"], ["Equipment", "Air or steam line"], ["Goal", "Dry filter cake"]] },
-  { name: "Cleaning", icon: "✦", text: "Accumulated filter cake is removed so the filter is ready for another cycle.", watch: [["Primary value", "Cycle status"], ["Equipment", "Filter mechanism"], ["Goal", "Reset filter"]] }
+  { name: "Backrun", icon: "↶", text: "Oil is routed through the defined backrun step before normal filtration.", watch: [["Primary value", "Stage timer"], ["Equipment", "Routing valves"], ["Goal", "Prepare flow path"]] },
+  { name: "Filtration", icon: "≋", text: "Oil passes through the filter medium while bleaching earth and captured impurities remain as filter cake.", watch: [["Primary value", "Pressure"], ["Equipment", "Filter + pump"], ["Goal", "Separate solids"]] },
+  { name: "Circulation", icon: "⟳", text: "Oil circulates until the required clarity or stable process condition is achieved.", watch: [["Primary value", "Flow / clarity"], ["Equipment", "Circulation line"], ["Goal", "Stabilise quality"]] },
+  { name: "Emptying", icon: "↘", text: "Remaining liquid is displaced or drained from the filter.", watch: [["Primary value", "Level / flow"], ["Equipment", "Outlet valve"], ["Goal", "Recover oil"]] },
+  { name: "Drying", icon: "≈", text: "The filter cake is dried to recover remaining oil and prepare for discharge.", watch: [["Primary value", "Time / pressure"], ["Equipment", "Air or steam"], ["Goal", "Dry filter cake"]] },
+  { name: "Post-empty", icon: "⋯", text: "A short confirmation stage completes emptying before ventilation and cleaning.", watch: [["Primary value", "Watchover timer"], ["Equipment", "Drain route"], ["Goal", "Confirm empty"]] },
+  { name: "Ventilation", icon: "≋", text: "The filter pressure is safely equalised and the vessel is prepared for cleaning.", watch: [["Primary value", "Pressure / timer"], ["Equipment", "Vent line"], ["Goal", "Make condition safe"]] },
+  { name: "Cleaning", icon: "✦", text: "Accumulated filter cake is removed so the filter can return to ready state.", watch: [["Primary value", "Cycle status"], ["Equipment", "Vibrator / mechanism"], ["Goal", "Reset filter"]] }
 ];
 
 function renderCycle(index) {
@@ -186,15 +249,17 @@ document.querySelectorAll("#answers button").forEach(button => {
 });
 
 const checklistItems = [
-  "Explain the purpose of bleaching",
-  "Explain the purpose of filtration",
-  "Identify a pump, valve, tank and filter",
-  "Describe temperature, pressure, flow and level",
-  "Explain the difference between PV and SV",
-  "Name the main filter-cycle stages",
-  "Identify what an alarm communicates",
-  "Ask where historical SCADA data is stored"
-];
+  "Explain the complete crude-oil to filtration flow",
+  "Explain the purpose of bleaching vessel B602",
+  "Identify filters F601, F602, F603 and F604",
+  "Explain VE702, E702, utilities and vacuum at a high level",
+  "Recognise PT, TT, FT, LT and their units",
+  "Explain PV, SV and MV",
+  "Name the complete filter-cycle sequence",
+  "Explain alarm tag, timestamp, description and status",
+  "Ask for normal operating ranges and tag definitions",
+  "Ask whether historical data can be exported safely"
+]
 let checks = JSON.parse(localStorage.getItem("pacoil-checks") || "[]");
 function renderChecks() {
   document.getElementById("dailyChecks").innerHTML = checklistItems.map((item, index) =>
